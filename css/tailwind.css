@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Primary Colors */
+  --color-primary: #000000; /* black */
+  --color-secondary: #A855F7; /* purple-500 */
+  --color-accent: #3B82F6; /* blue-500 */
+  
+  /* Background Colors */
+  --color-background: #1E1E1E; /* gray-800 */
+  --color-surface: #2A2A2A; /* gray-700 */
+  
+  /* Text Colors */
+  --color-text-primary: #FFFFFF; /* white */
+  --color-text-secondary: #E5E5E5; /* gray-200 */
+  
+  /* Status Colors */
+  --color-success: #10B981; /* emerald-500 */
+  --color-warning: #F59E0B; /* amber-500 */
+  --color-error: #EF4444; /* red-500 */
+  
+  /* Neon Glow Effects */
+  --glow-purple: 0 0 20px rgba(168, 85, 247, 0.3);
+  --glow-blue: 0 0 20px rgba(59, 130, 246, 0.3);
+  --glow-success: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+  }
+}
+
+@layer components {
+  .neon-glow-purple {
+    box-shadow: var(--glow-purple);
+  }
+  
+  .neon-glow-blue {
+    box-shadow: var(--glow-blue);
+  }
+  
+  .neon-glow-success {
+    box-shadow: var(--glow-success);
+  }
+  
+  .glassmorphic {
+    background: rgba(42, 42, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+  }
+  
+  .breathing-animation {
+    animation: breathing 2s ease-in-out infinite;
+  }
+  
+  @keyframes breathing {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  
+  .transition-smooth {
+    transition: all 300ms ease-out;
+  }
+  
+  .transition-micro {
+    transition: all 150ms ease-out;
+  }
+}
+
+@layer utilities {
+  .text-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .font-poppins {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+  }
+}

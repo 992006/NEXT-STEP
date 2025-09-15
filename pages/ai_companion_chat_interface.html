@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Companion - Next Step</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <style>
+        @keyframes pulse-orb {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        @keyframes typing-dots {
+            0%, 20% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        @keyframes message-slide-in {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+        
+        @keyframes float-suggestion {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .ai-orb {
+            animation: pulse-orb 2s ease-in-out infinite;
+        }
+        
+        .ai-orb.responding {
+            animation: pulse-orb 0.8s ease-in-out infinite;
+        }
+        
+        .typing-indicator {
+            animation: typing-dots 1.5s infinite;
+        }
+        
+        .typing-indicator:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator:nth-child(3) { animation-delay: 0.4s; }
+        
+        .message-bubble {
+            animation: message-slide-in 0.3s ease-out;
+        }
+        
+        .suggestion-bubble {
+            animation: float-suggestion 3s ease-in-out infinite;
+        }
+        
+        .suggestion-bubble:nth-child(2) { animation-delay: 1s; }
+        .suggestion-bubble:nth-child(3) { animation-delay: 2s; }
+        
+        .chat-container {
+            height: calc(100vh - 80px);
+        }
+        
+        .message-input {
+            background: rgba(42, 42, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+        
+        .voice-recording {
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.3) 0%, transparent 70%);
+            animation: pulse-orb 1s ease-in-out infinite;
+        }
+        
+        .progress-chart {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+        }
+    </style>
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fnextstep6976back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background text-text-primary font-inter">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glassmorphic">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <svg class="w-10 h-10" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="8" fill="url(#logoGradient)"/>
+                        <path d="M12 28L20 12L28 28H24L22 24H18L16 28H12Z" fill="white"/>
+                        <path d="M18.5 20H21.5L20 17L18.5 20Z" fill="white"/>
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0" y1="0" x2="40" y2="40">
+                                <stop offset="0%" stop-color="#A855F7"/>
+                                <stop offset="100%" stop-color="#3B82F6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="text-2xl font-poppins font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Next Step</span>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="homepage_ai_career_platform.html" class="text-text-secondary hover:text-secondary transition-micro">Home</a>
+                    <a href="dashboard_student_command_center.html" class="text-text-secondary hover:text-secondary transition-micro">Dashboard</a>
+                    <a href="career_discovery_engine.html" class="text-text-secondary hover:text-secondary transition-micro">Explore Careers</a>
+                    <a href="roadmap_builder_career_timeline.html" class="text-text-secondary hover:text-secondary transition-micro">Roadmap</a>
+                    <a href="resources_hub_learning_marketplace.html" class="text-text-secondary hover:text-secondary transition-micro">Resources</a>
+                    <a href="ai_companion_chat_interface.html" class="text-text-primary hover:text-secondary transition-micro">AI Chat</a>
+                </div>
+                
+                <!-- User Actions -->
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 hover:bg-surface rounded-lg transition-micro">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-12"/>
+                        </svg>
+                    </button>
+                    <button class="p-2 hover:bg-surface rounded-lg transition-micro">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Chat Interface -->
+    <div class="pt-20 h-screen flex">
+        <!-- Chat Container -->
+        <div class="flex-1 flex flex-col chat-container">
+            <!-- Chat Header -->
+            <div class="glassmorphic p-6 border-b border-surface">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <!-- AI Avatar Orb -->
+                        <div class="relative">
+                            <div class="ai-orb w-12 h-12 rounded-full bg-gradient-to-r from-secondary to-accent flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                </svg>
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background"></div>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-poppins font-semibold">AI Career Companion</h2>
+                            <p class="text-sm text-text-secondary">Online • Ready to help with your career journey</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Controls -->
+                    <div class="flex items-center space-x-2">
+                        <button class="p-2 hover:bg-surface rounded-lg transition-micro" title="Voice Input">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                            </svg>
+                        </button>
+                        <button class="p-2 hover:bg-surface rounded-lg transition-micro" title="Upload File">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+                            </svg>
+                        </button>
+                        <button class="p-2 hover:bg-surface rounded-lg transition-micro" title="Screen Share">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </button>
+                        <button class="p-2 hover:bg-surface rounded-lg transition-micro" title="Clear Chat">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-6" id="messagesContainer">
+                <!-- Welcome Message -->
+                <div class="flex items-start space-x-4 message-bubble">
+                    <div class="ai-orb w-10 h-10 rounded-full bg-gradient-to-r from-secondary to-accent flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <div class="glassmorphic rounded-2xl rounded-tl-md p-4 max-w-2xl">
+                            <p class="text-text-primary mb-3">👋 Hey there! I'm your AI Career Companion, here to help you navigate your professional journey. I can assist with career exploration, skill development, roadmap planning, and much more!</p>
+                            <p class="text-text-secondary text-sm">What would you like to explore today?</p>
+                        </div>
+                        <div class="text-xs text-text-secondary mt-2">Just now</div>
+                    </div>
+                </div>
+
+                <!-- Interactive Career Card -->
+                <div class="flex items-start space-x-4 message-bubble">
+                    <div class="ai-orb w-10 h-10 rounded-full bg-gradient-to-r from-accent to-success flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <div class="glassmorphic rounded-2xl rounded-tl-md p-4 max-w-2xl">
+                            <p class="text-text-primary mb-4">Based on your profile, I found some exciting career opportunities that match your interests in technology and problem-solving:</p>
+                            
+                            <!-- Career Recommendation Card -->
+                            <div class="bg-surface/50 rounded-xl p-4 mb-4">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-12 h-12 bg-gradient-to-r from-secondary to-accent rounded-lg flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-poppins font-semibold">Data Scientist</h4>
+                                            <p class="text-sm text-text-secondary">95% match</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-success font-semibold">$95K - $150K</div>
+                                        <div class="text-xs text-success">↗ 22% growth</div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-text-secondary mb-3">Analyze complex data to drive business decisions using machine learning and statistical methods.</p>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-1 bg-secondary/20 text-secondary rounded-full text-xs hover:bg-secondary/30 transition-micro">
+                                        View Details
+                                    </button>
+                                    <button class="px-3 py-1 bg-accent/20 text-accent rounded-full text-xs hover:bg-accent/30 transition-micro">
+                                        Add to Roadmap
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-2">
+                                <button class="px-4 py-2 bg-gradient-to-r from-secondary to-accent text-white rounded-lg text-sm hover:shadow-neon-purple transition-smooth">
+                                    Explore More Careers
+                                </button>
+                                <button class="px-4 py-2 border border-accent text-accent rounded-lg text-sm hover:bg-accent hover:text-white transition-smooth">
+                                    Build My Roadmap
+                                </button>
+                            </div>
+                        </div>
+                        <div class="text-xs text-text-secondary mt-2">2 minutes ago</div>
+                    </div>
+                </div>
+
+                <!-- User Message -->
+                <div class="flex items-start space-x-4 justify-end message-bubble">
+                    <div class="flex-1 flex justify-end">
+                        <div class="bg-gradient-to-r from-secondary to-accent rounded-2xl rounded-tr-md p-4 max-w-2xl">
+                            <p class="text-white">That's really helpful! Can you show me what skills I need to develop for a data science career?</p>
+                        </div>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-surface flex items-center justify-center flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?q=80&w=150&h=150&auto=format&fit=crop&ixlib=rb-4.0.3" alt="User Avatar" class="w-10 h-10 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                    </div>
+                </div>
+
+                <!-- Skills Visualization Response -->
+                <div class="flex items-start space-x-4 message-bubble">
+                    <div class="ai-orb w-10 h-10 rounded-full bg-gradient-to-r from-warning to-success flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <div class="glassmorphic rounded-2xl rounded-tl-md p-4 max-w-2xl">
+                            <p class="text-text-primary mb-4">Absolutely! Here's a breakdown of essential data science skills and your current progress:</p>
+                            
+                            <!-- Skills Progress Chart -->
+                            <div class="progress-chart rounded-xl p-4 mb-4">
+                                <h4 class="font-poppins font-semibold mb-4">Your Data Science Skill Progress</h4>
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm">Python Programming</span>
+                                        <span class="text-sm text-success">75%</span>
+                                    </div>
+                                    <div class="w-full bg-surface rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-success to-accent h-2 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm">Statistics & Math</span>
+                                        <span class="text-sm text-warning">45%</span>
+                                    </div>
+                                    <div class="w-full bg-surface rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-warning to-secondary h-2 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm">Machine Learning</span>
+                                        <span class="text-sm text-error">25%</span>
+                                    </div>
+                                    <div class="w-full bg-surface rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-error to-warning h-2 rounded-full" style="width: 25%"></div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm">Data Visualization</span>
+                                        <span class="text-sm text-accent">60%</span>
+                                    </div>
+                                    <div class="w-full bg-surface rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-accent to-secondary h-2 rounded-full" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-text-secondary text-sm mb-4">💡 <strong>Recommendation:</strong> Focus on strengthening your Statistics & Math foundation next. I've found some great courses that can help!</p>
+                            
+                            <div class="flex space-x-2">
+                                <button class="px-4 py-2 bg-gradient-to-r from-warning to-success text-white rounded-lg text-sm hover:shadow-neon-success transition-smooth">
+                                    View Recommended Courses
+                                </button>
+                                <button class="px-4 py-2 border border-warning text-warning rounded-lg text-sm hover:bg-warning hover:text-white transition-smooth">
+                                    Update My Roadmap
+                                </button>
+                            </div>
+                        </div>
+                        <div class="text-xs text-text-secondary mt-2">1 minute ago</div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="flex items-start space-x-4" id="typingIndicator" style="display: none;">
+                    <div class="ai-orb responding w-10 h-10 rounded-full bg-gradient-to-r from-secondary to-accent flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                    </div>
+                    <div class="glassmorphic rounded-2xl rounded-tl-md p-4">
+                        <div class="flex space-x-1">
+                            <div class="w-2 h-2 bg-text-secondary rounded-full typing-indicator"></div>
+                            <div class="w-2 h-2 bg-text-secondary rounded-full typing-indicator"></div>
+                            <div class="w-2 h-2 bg-text-secondary rounded-full typing-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Suggestions -->
+            <div class="px-6 py-2">
+                <div class="flex space-x-2 overflow-x-auto">
+                    <button class="suggestion-bubble px-4 py-2 glassmorphic rounded-full text-sm whitespace-nowrap hover:bg-secondary/20 transition-smooth">
+                        📊 Check my progress
+                    </button>
+                    <button class="suggestion-bubble px-4 py-2 glassmorphic rounded-full text-sm whitespace-nowrap hover:bg-accent/20 transition-smooth">
+                        🎯 Update my roadmap
+                    </button>
+                    <button class="suggestion-bubble px-4 py-2 glassmorphic rounded-full text-sm whitespace-nowrap hover:bg-success/20 transition-smooth">
+                        📚 Find new courses
+                    </button>
+                    <button class="suggestion-bubble px-4 py-2 glassmorphic rounded-full text-sm whitespace-nowrap hover:bg-warning/20 transition-smooth">
+                        💼 Explore careers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Message Input -->
+            <div class="message-input p-6">
+                <div class="flex items-end space-x-4">
+                    <!-- File Upload -->
+                    <button class="p-3 hover:bg-surface rounded-lg transition-micro" title="Upload File">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Text Input -->
+                    <div class="flex-1 relative">
+                        <textarea class="w-full bg-surface border border-surface rounded-2xl px-4 py-3 pr-12 resize-none focus:outline-none focus:border-secondary transition-micro" placeholder="Ask me anything about your career journey..." rows="1" id="messageInput"></textarea>
+                        <button class="absolute right-3 bottom-3 p-1 hover:bg-background rounded-lg transition-micro">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.01M15 10h1.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Voice Input -->
+                    <button class="p-3 hover:bg-surface rounded-lg transition-micro" title="Voice Input" id="voiceButton">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Send Button -->
+                    <button class="p-3 bg-gradient-to-r from-secondary to-accent text-white rounded-lg hover:shadow-neon-purple transition-smooth" id="sendButton">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar - Chat History & Settings -->
+        <div class="w-80 glassmorphic border-l border-surface hidden lg:block">
+            <div class="p-6">
+                <h3 class="font-poppins font-semibold mb-4">Recent Conversations</h3>
+                <div class="space-y-3">
+                    <div class="p-3 bg-surface/50 rounded-lg hover:bg-surface/70 transition-micro cursor-pointer">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-medium">Career Exploration</span>
+                            <span class="text-xs text-text-secondary">Today</span>
+                        </div>
+                        <p class="text-xs text-text-secondary">Data science career path discussion...</p>
+                    </div>
+                    
+                    <div class="p-3 bg-surface/30 rounded-lg hover:bg-surface/50 transition-micro cursor-pointer">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-medium">Skill Assessment</span>
+                            <span class="text-xs text-text-secondary">Yesterday</span>
+                        </div>
+                        <p class="text-xs text-text-secondary">Python programming evaluation...</p>
+                    </div>
+                    
+                    <div class="p-3 bg-surface/30 rounded-lg hover:bg-surface/50 transition-micro cursor-pointer">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-medium">Roadmap Planning</span>
+                            <span class="text-xs text-text-secondary">2 days ago</span>
+                        </div>
+                        <p class="text-xs text-text-secondary">Creating learning milestones...</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="font-poppins font-semibold mb-4">Quick Actions</h3>
+                    <div class="space-y-2">
+                        <a href="career_discovery_engine.html" class="block p-3 bg-secondary/10 text-secondary rounded-lg hover:bg-secondary/20 transition-micro">
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                                <span class="text-sm">Explore Careers</span>
+                            </div>
+                        </a>
+                        
+                        <a href="roadmap_builder_career_timeline.html" class="block p-3 bg-accent/10 text-accent rounded-lg hover:bg-accent/20 transition-micro">
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                                </svg>
+                                <span class="text-sm">Build Roadmap</span>
+                            </div>
+                        </a>
+                        
+                        <a href="resources_hub_learning_marketplace.html" class="block p-3 bg-success/10 text-success rounded-lg hover:bg-success/20 transition-micro">
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                                <span class="text-sm">Find Resources</span>
+                            </div>
+                        </a>
+                        
+                        <a href="dashboard_student_command_center.html" class="block p-3 bg-warning/10 text-warning rounded-lg hover:bg-warning/20 transition-micro">
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                </svg>
+                                <span class="text-sm">View Dashboard</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="font-poppins font-semibold mb-4">AI Settings</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">Response Style</span>
+                            <select class="bg-surface border border-surface rounded px-2 py-1 text-xs">
+                                <option>Detailed</option>
+                                <option>Concise</option>
+                                <option>Casual</option>
+                            </select>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">Voice Input</span>
+                            <button class="w-8 h-4 bg-secondary rounded-full relative">
+                                <div class="w-3 h-3 bg-white rounded-full absolute right-0.5 top-0.5"></div>
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">Notifications</span>
+                            <button class="w-8 h-4 bg-surface rounded-full relative">
+                                <div class="w-3 h-3 bg-white rounded-full absolute left-0.5 top-0.5"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Chat Bubble (Hidden on Desktop) -->
+    <div class="fixed bottom-6 right-6 lg:hidden">
+        <button class="w-14 h-14 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center shadow-neon-purple">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        // Auto-resize textarea
+        const messageInput = document.getElementById('messageInput');
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+
+        // Send message functionality
+        const sendButton = document.getElementById('sendButton');
+        const messagesContainer = document.getElementById('messagesContainer');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            const userMessage = createUserMessage(message);
+            messagesContainer.appendChild(userMessage);
+            
+            // Clear input
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            
+            // Show typing indicator
+            typingIndicator.style.display = 'flex';
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Simulate AI response after delay
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
+                const aiResponse = createAIResponse("I understand you're interested in " + message + ". Let me help you with that!");
+                messagesContainer.appendChild(aiResponse);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 2000);
+        }
+
+        function createUserMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start space-x-4 justify-end message-bubble';
+            messageDiv.innerHTML = `
+                <div class="flex-1 flex justify-end">
+                    <div class="bg-gradient-to-r from-secondary to-accent rounded-2xl rounded-tr-md p-4 max-w-2xl">
+                        <p class="text-white">${text}</p>
+                    </div>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-surface flex items-center justify-center flex-shrink-0">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?q=80&w=150&h=150&auto=format&fit=crop&ixlib=rb-4.0.3" 
+                         alt="User Avatar" 
+                         class="w-10 h-10 rounded-full object-cover"
+                         onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                </div>
+            `;
+            return messageDiv;
+        }
+
+        function createAIResponse(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start space-x-4 message-bubble';
+            messageDiv.innerHTML = `
+                <div class="ai-orb w-10 h-10 rounded-full bg-gradient-to-r from-secondary to-accent flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="glassmorphic rounded-2xl rounded-tl-md p-4 max-w-2xl">
+                        <p class="text-text-primary">${text}</p>
+                    </div>
+                    <div class="text-xs text-text-secondary mt-2">Just now</div>
+                </div>
+            `;
+            return messageDiv;
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Voice input simulation
+        const voiceButton = document.getElementById('voiceButton');
+        let isRecording = false;
+
+        voiceButton.addEventListener('click', function() {
+            if (!isRecording) {
+                isRecording = true;
+                this.classList.add('voice-recording');
+                this.innerHTML = `
+                    <svg class="w-5 h-5 text-error" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+                    </svg>
+                `;
+                
+                // Simulate recording for 3 seconds
+                setTimeout(() => {
+                    isRecording = false;
+                    this.classList.remove('voice-recording');
+                    this.innerHTML = `
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                        </svg>
+                    `;
+                    messageInput.value = "I'd like to learn more about machine learning careers.";
+                }, 3000);
+            }
+        });
+
+        // Quick suggestion clicks
+        document.querySelectorAll('.suggestion-bubble').forEach(button => {
+            button.addEventListener('click', function() {
+                const text = this.textContent.trim();
+                messageInput.value = text;
+                sendMessage();
+            });
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

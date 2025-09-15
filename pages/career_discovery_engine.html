@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Career Discovery Engine - Next Step</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <style>
+        @keyframes pulse-node {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        @keyframes float-career {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-15px) rotate(1deg); }
+            66% { transform: translateY(-8px) rotate(-0.5deg); }
+        }
+        
+        @keyframes slide-progress {
+            from { width: 0%; }
+            to { width: var(--progress-width); }
+        }
+        
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.6); }
+        }
+        
+        .career-node {
+            animation: pulse-node 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .career-node:hover {
+            transform: scale(1.2);
+            filter: brightness(1.3);
+        }
+        
+        .career-card {
+            animation: float-career 6s ease-in-out infinite;
+        }
+        
+        .career-card:nth-child(2) { animation-delay: -2s; }
+        .career-card:nth-child(3) { animation-delay: -4s; }
+        
+        .progress-bar {
+            animation: slide-progress 1s ease-out forwards;
+        }
+        
+        .filter-tag {
+            transition: all 0.2s ease;
+        }
+        
+        .filter-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
+        }
+        
+        .modal-backdrop {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .skill-meter {
+            background: linear-gradient(90deg, #A855F7 0%, #3B82F6 100%);
+            height: 8px;
+            border-radius: 4px;
+            transition: width 0.8s ease-out;
+        }
+        
+        .trending-indicator {
+            animation: glow-pulse 2s ease-in-out infinite;
+        }
+    </style>
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fnextstep6976back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background text-text-primary font-inter">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glassmorphic">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <svg class="w-10 h-10" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="8" fill="url(#logoGradient)"/>
+                        <path d="M12 28L20 12L28 28H24L22 24H18L16 28H12Z" fill="white"/>
+                        <path d="M18.5 20H21.5L20 17L18.5 20Z" fill="white"/>
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0" y1="0" x2="40" y2="40">
+                                <stop offset="0%" stop-color="#A855F7"/>
+                                <stop offset="100%" stop-color="#3B82F6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="text-2xl font-poppins font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Next Step</span>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="homepage_ai_career_platform.html" class="text-text-secondary hover:text-secondary transition-micro">Home</a>
+                    <a href="career_discovery_engine.html" class="text-text-primary hover:text-secondary transition-micro">Explore Careers</a>
+                    <a href="resources_hub_learning_marketplace.html" class="text-text-secondary hover:text-secondary transition-micro">Resources</a>
+                    <a href="ai_companion_chat_interface.html" class="text-text-secondary hover:text-secondary transition-micro">AI Chat</a>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="flex items-center space-x-4">
+                    <button class="px-6 py-2 text-text-secondary hover:text-secondary transition-micro">Sign In</button>
+                    <a href="dashboard_student_command_center.html" class="px-6 py-2 bg-gradient-to-r from-secondary to-accent text-white rounded-lg hover:shadow-neon-purple transition-smooth">Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Assessment -->
+    <section class="pt-24 pb-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl md:text-6xl font-poppins font-bold mb-6">
+                    <span class="bg-gradient-to-r from-secondary via-accent to-secondary bg-clip-text text-transparent">
+                        Discover Your Perfect Career Match
+                    </span>
+                </h1>
+                <p class="text-xl text-text-secondary max-w-3xl mx-auto mb-8">
+                    AI-powered career exploration that reveals opportunities you never knew existed. Your perfect match is waiting to be discovered.
+                </p>
+                
+                <!-- Progress Indicator -->
+                <div class="max-w-md mx-auto mb-8">
+                    <div class="flex items-center justify-between text-sm text-text-secondary mb-2">
+                        <span>Assessment Progress</span>
+                        <span id="progress-text">0% Complete</span>
+                    </div>
+                    <div class="w-full bg-surface rounded-full h-3">
+                        <div id="progress-bar" class="progress-bar h-3 bg-gradient-to-r from-secondary to-accent rounded-full" style="--progress-width: 0%; width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assessment Flow -->
+            <div id="assessment-container" class="max-w-4xl mx-auto">
+                <!-- Question 1: Interests -->
+                <div class="assessment-step glassmorphic rounded-2xl p-8 mb-8">
+                    <h3 class="text-2xl font-poppins font-semibold mb-6 text-center">What interests you most?</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="interest-card glassmorphic rounded-xl p-6 cursor-pointer hover:shadow-neon-purple transition-smooth group">
+                            <div class="w-16 h-16 bg-gradient-to-r from-secondary to-accent rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-smooth">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                </svg>
+                            </div>
+                            <h4 class="text-lg font-semibold text-center mb-2">Technology & Innovation</h4>
+                            <p class="text-text-secondary text-center text-sm">Building the future with code, AI, and cutting-edge solutions</p>
+                        </div>
+                        
+                        <div class="interest-card glassmorphic rounded-xl p-6 cursor-pointer hover:shadow-neon-blue transition-smooth group">
+                            <div class="w-16 h-16 bg-gradient-to-r from-accent to-success rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-smooth">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                            </div>
+                            <h4 class="text-lg font-semibold text-center mb-2">People & Communication</h4>
+                            <p class="text-text-secondary text-center text-sm">Connecting, inspiring, and leading teams to success</p>
+                        </div>
+                        
+                        <div class="interest-card glassmorphic rounded-xl p-6 cursor-pointer hover:shadow-neon-success transition-smooth group">
+                            <div class="w-16 h-16 bg-gradient-to-r from-success to-warning rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-smooth">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                </svg>
+                            </div>
+                            <h4 class="text-lg font-semibold text-center mb-2">Business & Strategy</h4>
+                            <p class="text-text-secondary text-center text-sm">Analyzing markets, driving growth, and making strategic decisions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2: Work Style -->
+                <div class="assessment-step glassmorphic rounded-2xl p-8 mb-8">
+                    <h3 class="text-2xl font-poppins font-semibold mb-6 text-center">What's your ideal work environment?</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="work-style-card glassmorphic rounded-xl p-6 cursor-pointer hover:shadow-neon-purple transition-smooth">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-r from-secondary to-accent rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold">Traditional Office</h4>
+                                    <p class="text-text-secondary text-sm">Collaborative workspace with team interaction</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="work-style-card glassmorphic rounded-xl p-6 cursor-pointer hover:shadow-neon-blue transition-smooth">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-r from-accent to-success rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4l2 2 4-4"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold">Remote/Flexible</h4>
+                                    <p class="text-text-secondary text-sm">Work from anywhere with flexible schedules</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Salary Expectations Slider -->
+                <div class="assessment-step glassmorphic rounded-2xl p-8 mb-8">
+                    <h3 class="text-2xl font-poppins font-semibold mb-6 text-center">What's your target salary range?</h3>
+                    <div class="max-w-2xl mx-auto">
+                        <div class="mb-6">
+                            <div class="flex justify-between text-sm text-text-secondary mb-2">
+                                <span>$40K</span>
+                                <span id="salary-display" class="text-secondary font-semibold">$75K</span>
+                                <span>$150K+</span>
+                            </div>
+                            <input type="range" id="salary-slider" min="40000" max="150000" value="75000" class="w-full h-3 bg-surface rounded-lg appearance-none cursor-pointer slider" />
+                        </div>
+                        <p class="text-text-secondary text-center text-sm">Drag to set your target salary range</p>
+                    </div>
+                </div>
+
+                <!-- Generate Results Button -->
+                <div class="text-center">
+                    <button id="generate-results" class="px-12 py-4 bg-gradient-to-r from-secondary to-accent text-white rounded-lg font-semibold hover:shadow-neon-purple transition-smooth transform hover:scale-105 text-lg">
+                        Discover My Career Matches
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Career Galaxy Results -->
+    <section id="results-section" class="py-20 px-6 hidden">
+        <div class="max-w-7xl mx-auto">
+            <!-- Results Header -->
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-poppins font-bold mb-4">Your Career Universe</h2>
+                <p class="text-xl text-text-secondary mb-8">AI has analyzed thousands of career paths to find your perfect matches</p>
+                
+                <!-- Filter System -->
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <div class="filter-tag px-4 py-2 bg-surface border border-secondary rounded-full cursor-pointer text-sm hover:bg-secondary hover:text-white">
+                        All Industries
+                    </div>
+                    <div class="filter-tag px-4 py-2 bg-surface border border-accent rounded-full cursor-pointer text-sm hover:bg-accent hover:text-white">
+                        Technology
+                    </div>
+                    <div class="filter-tag px-4 py-2 bg-surface border border-success rounded-full cursor-pointer text-sm hover:bg-success hover:text-white">
+                        Healthcare
+                    </div>
+                    <div class="filter-tag px-4 py-2 bg-surface border border-warning rounded-full cursor-pointer text-sm hover:bg-warning hover:text-white">
+                        Finance
+                    </div>
+                    <div class="filter-tag px-4 py-2 bg-surface border border-error rounded-full cursor-pointer text-sm hover:bg-error hover:text-white">
+                        Creative
+                    </div>
+                </div>
+            </div>
+
+            <!-- Career Galaxy Visualization -->
+            <div class="relative h-96 bg-surface/30 rounded-2xl overflow-hidden mb-12">
+                <svg class="w-full h-full" viewBox="0 0 1000 400">
+                    <!-- Connection Lines -->
+                    <defs>
+                        <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#A855F7" stop-opacity="0.3"/>
+                            <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/>
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- Career Nodes -->
+                    <g class="career-node" data-career="data-scientist">
+                        <circle cx="200" cy="120" r="25" fill="url(#nodeGradient1)"/>
+                        <text x="200" y="125" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Data Scientist</text>
+                        <text x="200" y="160" text-anchor="middle" fill="#10B981" font-size="8">98% Match</text>
+                        <circle cx="185" cy="105" r="3" fill="#FFD60A" class="trending-indicator"/>
+                    </g>
+                    
+                    <g class="career-node" data-career="ai-engineer">
+                        <circle cx="400" cy="80" r="30" fill="url(#nodeGradient2)"/>
+                        <text x="400" y="85" text-anchor="middle" fill="white" font-size="10" font-weight="bold">AI Engineer</text>
+                        <text x="400" y="125" text-anchor="middle" fill="#10B981" font-size="8">95% Match</text>
+                        <circle cx="380" cy="60" r="3" fill="#FFD60A" class="trending-indicator"/>
+                    </g>
+                    
+                    <g class="career-node" data-career="product-manager">
+                        <circle cx="600" cy="150" r="22" fill="url(#nodeGradient3)"/>
+                        <text x="600" y="155" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Product Manager</text>
+                        <text x="600" y="185" text-anchor="middle" fill="#3B82F6" font-size="8">89% Match</text>
+                    </g>
+                    
+                    <g class="career-node" data-career="ux-designer">
+                        <circle cx="300" cy="250" r="20" fill="url(#nodeGradient4)"/>
+                        <text x="300" y="255" text-anchor="middle" fill="white" font-size="10" font-weight="bold">UX Designer</text>
+                        <text x="300" y="285" text-anchor="middle" fill="#A855F7" font-size="8">85% Match</text>
+                    </g>
+                    
+                    <g class="career-node" data-career="cybersecurity">
+                        <circle cx="750" cy="200" r="18" fill="url(#nodeGradient5)"/>
+                        <text x="750" y="205" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Cybersecurity</text>
+                        <text x="750" y="235" text-anchor="middle" fill="#EF4444" font-size="8">82% Match</text>
+                        <circle cx="735" cy="185" r="3" fill="#FFD60A" class="trending-indicator"/>
+                    </g>
+                    
+                    <g class="career-node" data-career="devops-engineer">
+                        <circle cx="500" cy="300" r="16" fill="url(#nodeGradient6)"/>
+                        <text x="500" y="305" text-anchor="middle" fill="white" font-size="9" font-weight="bold">DevOps Engineer</text>
+                        <text x="500" y="330" text-anchor="middle" fill="#F59E0B" font-size="8">78% Match</text>
+                    </g>
+                    
+                    <!-- Gradients for nodes -->
+                    <defs>
+                        <radialGradient id="nodeGradient1">
+                            <stop offset="0%" stop-color="#10B981"/>
+                            <stop offset="100%" stop-color="#059669"/>
+                        </radialGradient>
+                        <radialGradient id="nodeGradient2">
+                            <stop offset="0%" stop-color="#A855F7"/>
+                            <stop offset="100%" stop-color="#7C3AED"/>
+                        </radialGradient>
+                        <radialGradient id="nodeGradient3">
+                            <stop offset="0%" stop-color="#3B82F6"/>
+                            <stop offset="100%" stop-color="#2563EB"/>
+                        </radialGradient>
+                        <radialGradient id="nodeGradient4">
+                            <stop offset="0%" stop-color="#F59E0B"/>
+                            <stop offset="100%" stop-color="#D97706"/>
+                        </radialGradient>
+                        <radialGradient id="nodeGradient5">
+                            <stop offset="0%" stop-color="#EF4444"/>
+                            <stop offset="100%" stop-color="#DC2626"/>
+                        </radialGradient>
+                        <radialGradient id="nodeGradient6">
+                            <stop offset="0%" stop-color="#8B5CF6"/>
+                            <stop offset="100%" stop-color="#7C3AED"/>
+                        </radialGradient>
+                    </defs>
+                </svg>
+            </div>
+
+            <!-- Career Cards Grid -->
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <!-- Top Match Card -->
+                <div class="career-card glassmorphic rounded-2xl p-6 border-2 border-success">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-gradient-to-r from-success to-accent rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-poppins font-semibold">Data Scientist</h3>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-success text-sm font-medium">98% Match</span>
+                                    <span class="px-2 py-1 bg-warning text-black text-xs rounded-full">Trending</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-text-secondary">Salary Range</span>
+                            <span class="text-success font-medium">$95K - $150K</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-text-secondary">Growth Rate</span>
+                            <span class="text-success font-medium">+22% (5 years)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-text-secondary">Remote Friendly</span>
+                            <span class="text-success font-medium">95% Remote</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button class="flex-1 py-2 bg-gradient-to-r from-success to-accent text-white rounded-lg text-sm font-medium hover:shadow-neon-success transition-smooth" onclick="openCareerModal('data-scientist')">
+                            View Details
+                        </button>
+                        <a href="roadmap_builder_career_timeline.html" class="flex-1 py-2 border border-success text-success rounded-lg text-sm font-medium text-center hover:bg-success hover:text-white transition-smooth">
+                            Create Roadmap
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Second Match Card -->
+                <div class="career-card glassmorphic rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-gradient-to-r from-secondary to-accent rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-poppins font-semibold">AI Engineer</h3>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-secondary text-sm font-medium">95% Match</span>
+                                    <span class="px-2 py-1 bg-warning text-black text-xs rounded-full">Hot</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-text-secondary">Salary Range</span>
+                            <span class="text-secondary font-medium">$110K - $180K</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-text-secondary">Growth Rate</span>
+                            <span class="text-secondary font-medium">+35% (5 years)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-text-secondary">Remote Friendly</span>
+                            <span class="text-secondary font-medium">90% Remote</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button class="flex-1 py-2 bg-gradient-to-r from-secondary to-accent text-white rounded-lg text-sm font-medium hover:shadow-neon-purple transition-smooth" onclick="openCareerModal('ai-engineer')">
+                            View Details
+                        </button>
+                        <a href="roadmap_builder_career_timeline.html" class="flex-1 py-2 border border-secondary text-secondary rounded-lg text-sm font-medium text-center hover:bg-secondary hover:text-white transition-smooth">
+                            Create Roadmap
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Third Match Card -->
+                <div class="career-card glassmorphic rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-gradient-to-r from-accent to-success rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-poppins font-semibold">Product Manager</h3>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-accent text-sm font-medium">89% Match</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-text-secondary">Salary Range</span>
+                            <span class="text-accent font-medium">$85K - $140K</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-text-secondary">Growth Rate</span>
+                            <span class="text-accent font-medium">+18% (5 years)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-text-secondary">Remote Friendly</span>
+                            <span class="text-accent font-medium">75% Remote</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button class="flex-1 py-2 bg-gradient-to-r from-accent to-success text-white rounded-lg text-sm font-medium hover:shadow-neon-blue transition-smooth" onclick="openCareerModal('product-manager')">
+                            View Details
+                        </button>
+                        <a href="roadmap_builder_career_timeline.html" class="flex-1 py-2 border border-accent text-accent rounded-lg text-sm font-medium text-center hover:bg-accent hover:text-white transition-smooth">
+                            Create Roadmap
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Tool -->
+            <div class="glassmorphic rounded-2xl p-8">
+                <h3 class="text-2xl font-poppins font-semibold mb-6 text-center">Compare Your Top Matches</h3>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <h4 class="font-semibold mb-4">Data Scientist</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="text-sm text-text-secondary mb-1">Python</div>
+                                <div class="w-full bg-surface rounded-full h-2">
+                                    <div class="skill-meter" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-text-secondary mb-1">Statistics</div>
+                                <div class="w-full bg-surface rounded-full h-2">
+                                    <div class="skill-meter" style="width: 70%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-text-secondary mb-1">Machine Learning</div>
+                                <div class="w-full bg-surface rounded-full h-2">
+                                    <div class="skill-meter" style="width: 60%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <h4 class="font-semibold mb-4">AI Engineer</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="text-sm text-text-secondary mb-1">Deep Learning</div>
+                                <div class="w-full bg-surface rounded-full h-2">
+                                    <div class="skill-meter" style="width: 75%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-text-secondary mb-1">Neural Networks</div>
+                                <div class="w-full bg-surface rounded-full h-2">
+                                    <div class="skill-meter" style="width: 65%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-text-secondary mb-1">TensorFlow</div>
+                                <div class="w-full bg-surface rounded-full h-2">
+                                    <div class="skill-meter" style="width: 55%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <h4 class="font-semibold mb-4">Product Manager</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="text-sm text-text-secondary mb-1">Strategy</div>
+                                <div class="w-full bg-surface rounded-full h-2">
+                                    <div class="skill-meter" style="width: 80%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-text-secondary mb-1">Analytics</div>
+                                <div class="w-full bg-surface rounded-full h-2">
+                                    <div class="skill-meter" style="width: 70%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-text-secondary mb-1">Leadership</div>
+                                <div class="w-full bg-surface rounded-full h-2">
+                                    <div class="skill-meter" style="width: 75%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Career Detail Modal -->
+    <div id="career-modal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="closeCareerModal()"></div>
+        <div class="relative z-10 flex items-center justify-center min-h-screen p-6">
+            <div class="glassmorphic rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-8">
+                    <!-- Modal Header -->
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gradient-to-r from-success to-accent rounded-xl flex items-center justify-center">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 id="modal-title" class="text-3xl font-poppins font-bold">Data Scientist</h2>
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-success text-lg font-medium">98% Match</span>
+                                    <span class="px-3 py-1 bg-warning text-black text-sm rounded-full">Trending</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="closeCareerModal()" class="w-10 h-10 bg-surface rounded-lg flex items-center justify-center hover:bg-error transition-smooth">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Modal Content -->
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Left Column -->
+                        <div class="space-y-6">
+                            <!-- Salary & Growth -->
+                            <div class="glassmorphic rounded-xl p-6">
+                                <h3 class="text-lg font-poppins font-semibold mb-4">Compensation & Growth</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-text-secondary">Entry Level</span>
+                                        <span class="text-success font-medium">$75K - $95K</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-text-secondary">Mid Level</span>
+                                        <span class="text-success font-medium">$95K - $130K</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-text-secondary">Senior Level</span>
+                                        <span class="text-success font-medium">$130K - $180K</span>
+                                    </div>
+                                    <div class="border-t border-surface pt-3 mt-3">
+                                        <div class="flex justify-between">
+                                            <span class="text-text-secondary">5-Year Growth</span>
+                                            <span class="text-success font-medium">+22%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Required Skills -->
+                            <div class="glassmorphic rounded-xl p-6">
+                                <h3 class="text-lg font-poppins font-semibold mb-4">Required Skills</h3>
+                                <div class="space-y-3">
+                                    <div>
+                                        <div class="flex justify-between text-sm mb-1">
+                                            <span>Python Programming</span>
+                                            <span class="text-success">Your Level: 85%</span>
+                                        </div>
+                                        <div class="w-full bg-surface rounded-full h-2">
+                                            <div class="skill-meter" style="width: 85%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-sm mb-1">
+                                            <span>Statistics & Math</span>
+                                            <span class="text-warning">Your Level: 60%</span>
+                                        </div>
+                                        <div class="w-full bg-surface rounded-full h-2">
+                                            <div class="skill-meter" style="width: 60%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-sm mb-1">
+                                            <span>Machine Learning</span>
+                                            <span class="text-error">Your Level: 40%</span>
+                                        </div>
+                                        <div class="w-full bg-surface rounded-full h-2">
+                                            <div class="skill-meter" style="width: 40%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <!-- Day in the Life -->
+                            <div class="glassmorphic rounded-xl p-6">
+                                <h3 class="text-lg font-poppins font-semibold mb-4">A Day in the Life</h3>
+                                <div class="space-y-3 text-sm text-text-secondary">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-secondary rounded-full mt-2"></div>
+                                        <span>Analyze complex datasets to extract business insights</span>
+                                    </div>
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-accent rounded-full mt-2"></div>
+                                        <span>Build predictive models using machine learning algorithms</span>
+                                    </div>
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-success rounded-full mt-2"></div>
+                                        <span>Collaborate with cross-functional teams on data strategy</span>
+                                    </div>
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-warning rounded-full mt-2"></div>
+                                        <span>Present findings to stakeholders and executives</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Market Insights -->
+                            <div class="glassmorphic rounded-xl p-6">
+                                <h3 class="text-lg font-poppins font-semibold mb-4">Market Insights</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-text-secondary">Job Openings</span>
+                                        <span class="text-success font-medium">15,000+ active</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-text-secondary">Remote Options</span>
+                                        <span class="text-accent font-medium">95% remote-friendly</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-text-secondary">Top Companies</span>
+                                        <span class="text-secondary font-medium">Google, Meta, Netflix</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-text-secondary">Education Level</span>
+                                        <span class="text-warning font-medium">Bachelor's preferred</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex space-x-4 mt-8">
+                        <a href="roadmap_builder_career_timeline.html" class="flex-1 py-3 bg-gradient-to-r from-success to-accent text-white rounded-lg font-semibold text-center hover:shadow-neon-success transition-smooth">
+                            Create Learning Roadmap
+                        </a>
+                        <a href="resources_hub_learning_marketplace.html" class="flex-1 py-3 border border-secondary text-secondary rounded-lg font-semibold text-center hover:bg-secondary hover:text-white transition-smooth">
+                            Find Resources
+                        </a>
+                        <a href="ai_companion_chat_interface.html" class="flex-1 py-3 border border-accent text-accent rounded-lg font-semibold text-center hover:bg-accent hover:text-white transition-smooth">
+                            Ask AI Companion
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-16 px-6 bg-surface/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <!-- Brand -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <svg class="w-10 h-10" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="8" fill="url(#footerLogoGradient)"/>
+                            <path d="M12 28L20 12L28 28H24L22 24H18L16 28H12Z" fill="white"/>
+                            <path d="M18.5 20H21.5L20 17L18.5 20Z" fill="white"/>
+                            <defs>
+                                <linearGradient id="footerLogoGradient" x1="0" y1="0" x2="40" y2="40">
+                                    <stop offset="0%" stop-color="#A855F7"/>
+                                    <stop offset="100%" stop-color="#3B82F6"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <span class="text-2xl font-poppins font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Next Step</span>
+                    </div>
+                    <p class="text-text-secondary mb-6 max-w-md">
+                        Transforming career guidance with AI-powered insights and personalized roadmaps for the next generation of professionals.
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-poppins font-semibold mb-4">Platform</h4>
+                    <ul class="space-y-2">
+                        <li><a href="career_discovery_engine.html" class="text-text-secondary hover:text-secondary transition-micro">Career Discovery</a></li>
+                        <li><a href="roadmap_builder_career_timeline.html" class="text-text-secondary hover:text-secondary transition-micro">Roadmap Builder</a></li>
+                        <li><a href="resources_hub_learning_marketplace.html" class="text-text-secondary hover:text-secondary transition-micro">Resources Hub</a></li>
+                        <li><a href="ai_companion_chat_interface.html" class="text-text-secondary hover:text-secondary transition-micro">AI Companion</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support -->
+                <div>
+                    <h4 class="font-poppins font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="javascript:void(0)" class="text-text-secondary hover:text-secondary transition-micro">Help Center</a></li>
+                        <li><a href="javascript:void(0)" class="text-text-secondary hover:text-secondary transition-micro">Contact Us</a></li>
+                        <li><a href="javascript:void(0)" class="text-text-secondary hover:text-secondary transition-micro">Privacy Policy</a></li>
+                        <li><a href="javascript:void(0)" class="text-text-secondary hover:text-secondary transition-micro">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-surface pt-8 text-center text-text-secondary">
+                <p>&copy; 2025 Next Step. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Assessment Progress Tracking
+        let currentStep = 0;
+        const totalSteps = 3;
+        
+        // Salary Slider
+        const salarySlider = document.getElementById('salary-slider');
+        const salaryDisplay = document.getElementById('salary-display');
+        
+        if (salarySlider && salaryDisplay) {
+            salarySlider.addEventListener('input', function() {
+                const value = parseInt(this.value);
+                salaryDisplay.textContent = '$' + (value / 1000) + 'K';
+                updateProgress();
+            });
+        }
+        
+        // Interest Cards Selection
+        document.querySelectorAll('.interest-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove active class from all cards
+                document.querySelectorAll('.interest-card').forEach(c => c.classList.remove('border-secondary'));
+                // Add active class to clicked card
+                this.classList.add('border-secondary');
+                updateProgress();
+            });
+        });
+        
+        // Work Style Cards Selection
+        document.querySelectorAll('.work-style-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.work-style-card').forEach(c => c.classList.remove('border-accent'));
+                this.classList.add('border-accent');
+                updateProgress();
+            });
+        });
+        
+        // Update Progress
+        function updateProgress() {
+            let progress = 0;
+            
+            // Check interest selection
+            if (document.querySelector('.interest-card.border-secondary')) progress += 33;
+            
+            // Check work style selection
+            if (document.querySelector('.work-style-card.border-accent')) progress += 33;
+            
+            // Check salary slider (always has value)
+            progress += 34;
+            
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            if (progressBar && progressText) {
+                progressBar.style.setProperty('--progress-width', progress + '%');
+                progressBar.style.width = progress + '%';
+                progressText.textContent = progress + '% Complete';
+            }
+        }
+        
+        // Generate Results
+        document.getElementById('generate-results').addEventListener('click', function() {
+            // Hide assessment
+            document.getElementById('assessment-container').style.display = 'none';
+            
+            // Show results with animation
+            const resultsSection = document.getElementById('results-section');
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Filter Tags
+        document.querySelectorAll('.filter-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                // Remove active class from all tags
+                document.querySelectorAll('.filter-tag').forEach(t => {
+                    t.classList.remove('bg-secondary', 'text-white');
+                    t.classList.add('bg-surface');
+                });
+                
+                // Add active class to clicked tag
+                this.classList.remove('bg-surface');
+                this.classList.add('bg-secondary', 'text-white');
+            });
+        });
+        
+        // Career Node Interactions
+        document.querySelectorAll('.career-node').forEach(node => {
+            node.addEventListener('click', function() {
+                const career = this.getAttribute('data-career');
+                openCareerModal(career);
+            });
+        });
+        
+        // Modal Functions
+        function openCareerModal(career) {
+            const modal = document.getElementById('career-modal');
+            const modalTitle = document.getElementById('modal-title');
+            
+            // Update modal content based on career
+            const careerData = {
+                'data-scientist': {
+                    title: 'Data Scientist',
+                    match: '98% Match',
+                    trending: true
+                },
+                'ai-engineer': {
+                    title: 'AI Engineer',
+                    match: '95% Match',
+                    trending: true
+                },
+                'product-manager': {
+                    title: 'Product Manager',
+                    match: '89% Match',
+                    trending: false
+                }
+            };
+            
+            if (careerData[career]) {
+                modalTitle.textContent = careerData[career].title;
+            }
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeCareerModal() {
+            const modal = document.getElementById('career-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Initialize progress
+        updateProgress();
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

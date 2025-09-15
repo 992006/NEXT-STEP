@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resources Hub - Learning Marketplace | Next Step</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(2deg); }
+            66% { transform: translateY(-10px) rotate(-1deg); }
+        }
+        
+        @keyframes tilt-hover {
+            0% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg); }
+            100% { transform: perspective(1000px) rotateX(5deg) rotateY(5deg); }
+        }
+        
+        @keyframes pulse-neon {
+            0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.6); }
+        }
+        
+        @keyframes slide-in {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes badge-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); }
+        }
+        
+        .resource-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .resource-card:hover {
+            animation: tilt-hover 0.3s ease forwards;
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.2);
+        }
+        
+        .floating-badge {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .filter-tag {
+            transition: all 0.2s ease;
+        }
+        
+        .filter-tag:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+        
+        .filter-tag.active {
+            animation: pulse-neon 2s ease-in-out infinite;
+        }
+        
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 1.5rem;
+            column-fill: balance;
+        }
+        
+        @media (max-width: 1024px) {
+            .masonry-grid {
+                column-count: 2;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .masonry-grid {
+                column-count: 1;
+            }
+        }
+        
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            animation: slide-in 0.5s ease forwards;
+        }
+        
+        .trending-banner {
+            background: linear-gradient(45deg, #A855F7, #3B82F6, #10B981);
+            background-size: 300% 300%;
+            animation: gradient-shift 3s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .urgency-indicator {
+            animation: badge-glow 1.5s ease-in-out infinite;
+        }
+        
+        .search-preview {
+            backdrop-filter: blur(20px);
+            background: rgba(42, 42, 42, 0.95);
+        }
+        
+        .skill-progress {
+            background: linear-gradient(90deg, #A855F7 0%, #3B82F6 50%, #10B981 100%);
+            background-size: 200% 100%;
+            animation: progress-flow 2s ease-in-out infinite;
+        }
+        
+        @keyframes progress-flow {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fnextstep6976back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background text-text-primary font-inter">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glassmorphic">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <svg class="w-10 h-10" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="8" fill="url(#logoGradient)"/>
+                        <path d="M12 28L20 12L28 28H24L22 24H18L16 28H12Z" fill="white"/>
+                        <path d="M18.5 20H21.5L20 17L18.5 20Z" fill="white"/>
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0" y1="0" x2="40" y2="40">
+                                <stop offset="0%" stop-color="#A855F7"/>
+                                <stop offset="100%" stop-color="#3B82F6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="text-2xl font-poppins font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Next Step</span>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="homepage_ai_career_platform.html" class="text-text-secondary hover:text-secondary transition-micro">Home</a>
+                    <a href="career_discovery_engine.html" class="text-text-secondary hover:text-secondary transition-micro">Explore Careers</a>
+                    <a href="resources_hub_learning_marketplace.html" class="text-text-primary hover:text-secondary transition-micro">Resources</a>
+                    <a href="ai_companion_chat_interface.html" class="text-text-secondary hover:text-secondary transition-micro">AI Chat</a>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="flex items-center space-x-4">
+                    <button class="px-6 py-2 text-text-secondary hover:text-secondary transition-micro">Sign In</button>
+                    <button class="px-6 py-2 bg-gradient-to-r from-secondary to-accent text-white rounded-lg hover:shadow-neon-purple transition-smooth">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-24 pb-12 px-6 overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0">
+            <div class="floating-badge absolute top-20 left-10 w-16 h-16 bg-gradient-to-r from-secondary to-accent rounded-full opacity-20"></div>
+            <div class="floating-badge absolute top-40 right-20 w-12 h-12 bg-gradient-to-r from-accent to-success rounded-full opacity-30" style="animation-delay: -1s;"></div>
+            <div class="floating-badge absolute bottom-20 left-1/4 w-8 h-8 bg-gradient-to-r from-success to-warning rounded-full opacity-25" style="animation-delay: -2s;"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto text-center">
+            <h1 class="text-5xl md:text-6xl font-poppins font-bold mb-6">
+                <span class="bg-gradient-to-r from-secondary via-accent to-success bg-clip-text text-transparent">
+                    Resources Hub
+                </span>
+            </h1>
+            <p class="text-xl text-text-secondary mb-8 max-w-3xl mx-auto">
+                Discover curated learning resources, trending skills, and career-boosting tools powered by AI recommendations tailored to your journey.
+            </p>
+            
+            <!-- Quick Stats -->
+            <div class="flex flex-wrap justify-center items-center space-x-8 mb-8">
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 bg-success rounded-full animate-pulse"></div>
+                    <span class="text-sm text-text-secondary">2,500+ Resources</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 bg-accent rounded-full animate-pulse"></div>
+                    <span class="text-sm text-text-secondary">95% Success Rate</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 bg-secondary rounded-full animate-pulse"></div>
+                    <span class="text-sm text-text-secondary">Updated Daily</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search & Filter Section -->
+    <section class="px-6 mb-12">
+        <div class="max-w-7xl mx-auto">
+            <!-- Advanced Search Bar -->
+            <div class="relative mb-8">
+                <div class="glassmorphic rounded-2xl p-6">
+                    <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+                        <!-- Search Input -->
+                        <div class="relative flex-1">
+                            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <input type="text" placeholder="Search courses, guides, templates, and tools..." class="w-full pl-12 pr-4 py-3 bg-surface/50 border border-secondary/30 rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-secondary focus:shadow-neon-purple transition-smooth" />
+                        </div>
+                        
+                        <!-- Filter Toggle -->
+                        <button class="px-6 py-3 bg-gradient-to-r from-secondary to-accent text-white rounded-lg hover:shadow-neon-purple transition-smooth flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                            </svg>
+                            <span>Filters</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Filter Tags -->
+            <div class="flex flex-wrap gap-3 mb-8">
+                <button class="filter-tag active px-4 py-2 glassmorphic rounded-full text-sm font-medium border border-secondary text-secondary">
+                    All Resources
+                    <span class="ml-2 px-2 py-1 bg-secondary/20 rounded-full text-xs">2,547</span>
+                </button>
+                <button class="filter-tag px-4 py-2 glassmorphic rounded-full text-sm font-medium border border-accent/30 text-text-secondary hover:text-accent hover:border-accent">
+                    Trending Skills
+                    <span class="ml-2 px-2 py-1 bg-accent/20 rounded-full text-xs">342</span>
+                </button>
+                <button class="filter-tag px-4 py-2 glassmorphic rounded-full text-sm font-medium border border-success/30 text-text-secondary hover:text-success hover:border-success">
+                    AI & Machine Learning
+                    <span class="ml-2 px-2 py-1 bg-success/20 rounded-full text-xs">189</span>
+                </button>
+                <button class="filter-tag px-4 py-2 glassmorphic rounded-full text-sm font-medium border border-warning/30 text-text-secondary hover:text-warning hover:border-warning">
+                    Career Transitions
+                    <span class="ml-2 px-2 py-1 bg-warning/20 rounded-full text-xs">156</span>
+                </button>
+                <button class="filter-tag px-4 py-2 glassmorphic rounded-full text-sm font-medium border border-error/30 text-text-secondary hover:text-error hover:border-error">
+                    Industry Certifications
+                    <span class="ml-2 px-2 py-1 bg-error/20 rounded-full text-xs">234</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Trending Section -->
+    <section class="px-6 mb-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="trending-banner rounded-2xl p-8 mb-8">
+                <div class="text-center text-white">
+                    <h2 class="text-3xl font-poppins font-bold mb-4">🔥 Trending This Week</h2>
+                    <p class="text-lg mb-6">Hot skills and resources that are shaping careers right now</p>
+                    <div class="urgency-indicator inline-flex items-center space-x-2 px-4 py-2 bg-white/20 rounded-full">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-sm font-medium">Limited Time: 40% Off Premium Resources</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trending Resources Grid -->
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <!-- Trending Resource 1 -->
+                <div class="resource-card glassmorphic rounded-2xl p-6 hover:shadow-neon-purple">
+                    <div class="relative mb-4">
+                        <img src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=400" alt="AI Fundamentals Course" class="w-full h-48 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute top-3 left-3 px-2 py-1 bg-success/90 text-white text-xs rounded-full font-medium">
+                            🔥 Trending
+                        </div>
+                        <div class="absolute top-3 right-3 px-2 py-1 bg-secondary/90 text-white text-xs rounded-full font-medium">
+                            AI Match: 95%
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-poppins font-semibold mb-2">AI Fundamentals for Beginners</h3>
+                    <p class="text-text-secondary text-sm mb-4">Master the basics of artificial intelligence and machine learning with hands-on projects.</p>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex text-warning">
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm text-text-secondary">4.9 (2,341)</span>
+                        </div>
+                        <span class="text-sm text-accent font-medium">8 weeks</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2 py-1 bg-success/20 text-success text-xs rounded-full">Beginner</span>
+                        <span class="text-lg font-bold text-secondary">$49</span>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button class="flex-1 py-2 bg-gradient-to-r from-secondary to-accent text-white rounded-lg hover:shadow-neon-purple transition-smooth">
+                            Add to Roadmap
+                        </button>
+                        <button class="px-3 py-2 border border-accent/30 text-accent rounded-lg hover:bg-accent hover:text-white transition-smooth">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Trending Resource 2 -->
+                <div class="resource-card glassmorphic rounded-2xl p-6 hover:shadow-neon-blue">
+                    <div class="relative mb-4">
+                        <img src="https://images.pixabay.com/photo/2018/05/08/08/44/artificial-intelligence-3382507_1280.jpg?auto=compress&cs=tinysrgb&w=400" alt="Data Science Bootcamp" class="w-full h-48 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute top-3 left-3 px-2 py-1 bg-warning/90 text-white text-xs rounded-full font-medium">
+                            ⚡ Popular
+                        </div>
+                        <div class="absolute top-3 right-3 px-2 py-1 bg-accent/90 text-white text-xs rounded-full font-medium">
+                            AI Match: 88%
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-poppins font-semibold mb-2">Complete Data Science Bootcamp</h3>
+                    <p class="text-text-secondary text-sm mb-4">From Python basics to advanced machine learning algorithms with real-world projects.</p>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex text-warning">
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 text-text-secondary" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm text-text-secondary">4.7 (1,892)</span>
+                        </div>
+                        <span class="text-sm text-accent font-medium">16 weeks</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2 py-1 bg-warning/20 text-warning text-xs rounded-full">Intermediate</span>
+                        <span class="text-lg font-bold text-accent">$129</span>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button class="flex-1 py-2 bg-gradient-to-r from-accent to-success text-white rounded-lg hover:shadow-neon-blue transition-smooth">
+                            Add to Roadmap
+                        </button>
+                        <button class="px-3 py-2 border border-accent/30 text-accent rounded-lg hover:bg-accent hover:text-white transition-smooth">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Trending Resource 3 -->
+                <div class="resource-card glassmorphic rounded-2xl p-6 hover:shadow-neon-success">
+                    <div class="relative mb-4">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=compress&cs=tinysrgb&w=400" alt="UX Design Masterclass" class="w-full h-48 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="absolute top-3 left-3 px-2 py-1 bg-error/90 text-white text-xs rounded-full font-medium">
+                            💎 Premium
+                        </div>
+                        <div class="absolute top-3 right-3 px-2 py-1 bg-success/90 text-white text-xs rounded-full font-medium">
+                            AI Match: 92%
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-poppins font-semibold mb-2">UX Design Masterclass</h3>
+                    <p class="text-text-secondary text-sm mb-4">Complete guide to user experience design with portfolio projects and industry insights.</p>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex text-warning">
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm text-text-secondary">4.8 (3,156)</span>
+                        </div>
+                        <span class="text-sm text-accent font-medium">12 weeks</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2 py-1 bg-accent/20 text-accent text-xs rounded-full">All Levels</span>
+                        <span class="text-lg font-bold text-success">$89</span>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button class="flex-1 py-2 bg-gradient-to-r from-success to-warning text-white rounded-lg hover:shadow-neon-success transition-smooth">
+                            Add to Roadmap
+                        </button>
+                        <button class="px-3 py-2 border border-accent/30 text-accent rounded-lg hover:bg-accent hover:text-white transition-smooth">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Resources Grid -->
+    <section class="px-6 mb-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-3xl font-poppins font-bold">All Resources</h2>
+                <div class="flex items-center space-x-4">
+                    <select class="px-4 py-2 bg-surface/50 border border-secondary/30 rounded-lg text-text-primary focus:outline-none focus:border-secondary">
+                        <option>Sort by Relevance</option>
+                        <option>Sort by Rating</option>
+                        <option>Sort by Price</option>
+                        <option>Sort by Duration</option>
+                    </select>
+                    <button class="px-4 py-2 border border-accent/30 text-accent rounded-lg hover:bg-accent hover:text-white transition-smooth">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Masonry Grid Layout -->
+            <div class="masonry-grid">
+                <!-- Resource Card 1 -->
+                <div class="masonry-item">
+                    <div class="resource-card glassmorphic rounded-2xl p-6 hover:shadow-neon-purple">
+                        <div class="relative mb-4">
+                            <img src="https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Python Programming" class="w-full h-40 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                            <div class="absolute top-2 right-2 px-2 py-1 bg-secondary/90 text-white text-xs rounded-full">
+                                Course
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-lg font-poppins font-semibold mb-2">Python Programming Essentials</h3>
+                        <p class="text-text-secondary text-sm mb-3">Learn Python from scratch with practical examples and projects.</p>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-warning text-xs">
+                                    ★★★★★
+                                </div>
+                                <span class="text-xs text-text-secondary">4.6 (892)</span>
+                            </div>
+                            <span class="text-xs text-accent">6 weeks</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2 py-1 bg-success/20 text-success text-xs rounded-full">Beginner</span>
+                            <span class="font-bold text-secondary">$39</span>
+                        </div>
+                        
+                        <button class="w-full py-2 bg-gradient-to-r from-secondary to-accent text-white rounded-lg hover:shadow-neon-purple transition-smooth text-sm">
+                            Add to Roadmap
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 2 -->
+                <div class="masonry-item">
+                    <div class="resource-card glassmorphic rounded-2xl p-6 hover:shadow-neon-blue">
+                        <div class="relative mb-4">
+                            <img src="https://images.pixabay.com/photo/2016/11/30/20/58/programming-1873854_1280.png?auto=compress&cs=tinysrgb&w=400" alt="JavaScript Guide" class="w-full h-32 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                            <div class="absolute top-2 right-2 px-2 py-1 bg-accent/90 text-white text-xs rounded-full">
+                                Guide
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-lg font-poppins font-semibold mb-2">Modern JavaScript Guide</h3>
+                        <p class="text-text-secondary text-sm mb-3">Comprehensive guide to ES6+ features and best practices.</p>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-warning text-xs">
+                                    ★★★★☆
+                                </div>
+                                <span class="text-xs text-text-secondary">4.4 (567)</span>
+                            </div>
+                            <span class="text-xs text-accent">Free</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2 py-1 bg-warning/20 text-warning text-xs rounded-full">Intermediate</span>
+                            <span class="font-bold text-success">Free</span>
+                        </div>
+                        
+                        <button class="w-full py-2 bg-gradient-to-r from-accent to-success text-white rounded-lg hover:shadow-neon-blue transition-smooth text-sm">
+                            Download Now
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 3 -->
+                <div class="masonry-item">
+                    <div class="resource-card glassmorphic rounded-2xl p-6 hover:shadow-neon-success">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=compress&cs=tinysrgb&w=400" alt="Resume Template" class="w-full h-48 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                            <div class="absolute top-2 right-2 px-2 py-1 bg-success/90 text-white text-xs rounded-full">
+                                Template
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-lg font-poppins font-semibold mb-2">Tech Resume Templates</h3>
+                        <p class="text-text-secondary text-sm mb-3">Professional resume templates optimized for tech roles.</p>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-warning text-xs">
+                                    ★★★★★
+                                </div>
+                                <span class="text-xs text-text-secondary">4.8 (1,234)</span>
+                            </div>
+                            <span class="text-xs text-accent">Instant</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2 py-1 bg-accent/20 text-accent text-xs rounded-full">All Levels</span>
+                            <span class="font-bold text-warning">$19</span>
+                        </div>
+                        
+                        <button class="w-full py-2 bg-gradient-to-r from-success to-warning text-white rounded-lg hover:shadow-neon-success transition-smooth text-sm">
+                            Get Template
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 4 -->
+                <div class="masonry-item">
+                    <div class="resource-card glassmorphic rounded-2xl p-6 hover:shadow-neon-purple">
+                        <div class="relative mb-4">
+                            <img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Cloud Computing" class="w-full h-36 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                            <div class="absolute top-2 right-2 px-2 py-1 bg-secondary/90 text-white text-xs rounded-full">
+                                Certification
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-lg font-poppins font-semibold mb-2">AWS Cloud Practitioner</h3>
+                        <p class="text-text-secondary text-sm mb-3">Prepare for AWS certification with practice exams and study materials.</p>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-warning text-xs">
+                                    ★★★★★
+                                </div>
+                                <span class="text-xs text-text-secondary">4.7 (2,156)</span>
+                            </div>
+                            <span class="text-xs text-accent">4 weeks</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2 py-1 bg-success/20 text-success text-xs rounded-full">Beginner</span>
+                            <span class="font-bold text-accent">$79</span>
+                        </div>
+                        
+                        <button class="w-full py-2 bg-gradient-to-r from-secondary to-accent text-white rounded-lg hover:shadow-neon-purple transition-smooth text-sm">
+                            Start Prep
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 5 -->
+                <div class="masonry-item">
+                    <div class="resource-card glassmorphic rounded-2xl p-6 hover:shadow-neon-blue">
+                        <div class="relative mb-4">
+                            <img src="https://images.pixabay.com/photo/2018/05/18/15/30/web-design-3411373_1280.jpg?auto=compress&cs=tinysrgb&w=400" alt="Design Tools" class="w-full h-44 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                            <div class="absolute top-2 right-2 px-2 py-1 bg-warning/90 text-white text-xs rounded-full">
+                                Tool
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-lg font-poppins font-semibold mb-2">Design System Kit</h3>
+                        <p class="text-text-secondary text-sm mb-3">Complete design system with components, icons, and guidelines.</p>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-warning text-xs">
+                                    ★★★★☆
+                                </div>
+                                <span class="text-xs text-text-secondary">4.5 (789)</span>
+                            </div>
+                            <span class="text-xs text-accent">Lifetime</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2 py-1 bg-warning/20 text-warning text-xs rounded-full">Intermediate</span>
+                            <span class="font-bold text-error">$149</span>
+                        </div>
+                        
+                        <button class="w-full py-2 bg-gradient-to-r from-accent to-success text-white rounded-lg hover:shadow-neon-blue transition-smooth text-sm">
+                            Get Kit
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 6 -->
+                <div class="masonry-item">
+                    <div class="resource-card glassmorphic rounded-2xl p-6 hover:shadow-neon-success">
+                        <div class="relative mb-4">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=compress&cs=tinysrgb&w=400" alt="Interview Prep" class="w-full h-40 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                            <div class="absolute top-2 right-2 px-2 py-1 bg-success/90 text-white text-xs rounded-full">
+                                Guide
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-lg font-poppins font-semibold mb-2">Tech Interview Mastery</h3>
+                        <p class="text-text-secondary text-sm mb-3">Complete guide to acing technical interviews with practice questions.</p>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-warning text-xs">
+                                    ★★★★★
+                                </div>
+                                <span class="text-xs text-text-secondary">4.9 (3,421)</span>
+                            </div>
+                            <span class="text-xs text-accent">Self-paced</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2 py-1 bg-accent/20 text-accent text-xs rounded-full">All Levels</span>
+                            <span class="font-bold text-success">$59</span>
+                        </div>
+                        
+                        <button class="w-full py-2 bg-gradient-to-r from-success to-warning text-white rounded-lg hover:shadow-neon-success transition-smooth text-sm">
+                            Start Prep
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Load More Button -->
+            <div class="text-center mt-12">
+                <button class="px-8 py-3 bg-gradient-to-r from-secondary to-accent text-white rounded-lg hover:shadow-neon-purple transition-smooth">
+                    Load More Resources
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Integration Section -->
+    <section class="py-16 px-6 bg-surface/30">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-poppins font-bold mb-4">Integrate with Your Roadmap</h2>
+                <p class="text-xl text-text-secondary">See how resources fit into your career timeline</p>
+            </div>
+            
+            <div class="glassmorphic rounded-2xl p-8">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <!-- Roadmap Preview -->
+                    <div>
+                        <h3 class="text-2xl font-poppins font-semibold mb-6">Your Current Roadmap</h3>
+                        <div class="space-y-4">
+                            <!-- Milestone 1 -->
+                            <div class="flex items-center space-x-4">
+                                <div class="w-4 h-4 bg-success rounded-full"></div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-medium">Python Fundamentals</span>
+                                        <span class="text-sm text-success">Completed</span>
+                                    </div>
+                                    <div class="w-full bg-surface/50 rounded-full h-2 mt-1">
+                                        <div class="skill-progress h-2 rounded-full w-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Milestone 2 -->
+                            <div class="flex items-center space-x-4">
+                                <div class="w-4 h-4 bg-accent rounded-full animate-pulse"></div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-medium">Data Science Bootcamp</span>
+                                        <span class="text-sm text-accent">In Progress</span>
+                                    </div>
+                                    <div class="w-full bg-surface/50 rounded-full h-2 mt-1">
+                                        <div class="skill-progress h-2 rounded-full w-3/4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Milestone 3 -->
+                            <div class="flex items-center space-x-4">
+                                <div class="w-4 h-4 bg-text-secondary rounded-full"></div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-medium text-text-secondary">AWS Certification</span>
+                                        <span class="text-sm text-text-secondary">Upcoming</span>
+                                    </div>
+                                    <div class="w-full bg-surface/50 rounded-full h-2 mt-1">
+                                        <div class="bg-text-secondary/30 h-2 rounded-full w-0"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Integration Features -->
+                    <div>
+                        <h3 class="text-2xl font-poppins font-semibold mb-6">Smart Integration</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-r from-secondary to-accent rounded-lg flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">One-Click Addition</h4>
+                                    <p class="text-text-secondary text-sm">Add resources directly to your roadmap timeline</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-r from-accent to-success rounded-lg flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">AI Recommendations</h4>
+                                    <p class="text-text-secondary text-sm">Get personalized suggestions based on your goals</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-r from-success to-warning rounded-lg flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Progress Tracking</h4>
+                                    <p class="text-text-secondary text-sm">Monitor completion and skill development</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="roadmap_builder_career_timeline.html" class="inline-block mt-6 px-6 py-3 bg-gradient-to-r from-secondary to-accent text-white rounded-lg hover:shadow-neon-purple transition-smooth">
+                            View Full Roadmap
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 px-6 bg-surface/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <!-- Brand -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <svg class="w-10 h-10" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="8" fill="url(#footerLogoGradient)"/>
+                            <path d="M12 28L20 12L28 28H24L22 24H18L16 28H12Z" fill="white"/>
+                            <path d="M18.5 20H21.5L20 17L18.5 20Z" fill="white"/>
+                            <defs>
+                                <linearGradient id="footerLogoGradient" x1="0" y1="0" x2="40" y2="40">
+                                    <stop offset="0%" stop-color="#A855F7"/>
+                                    <stop offset="100%" stop-color="#3B82F6"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <span class="text-2xl font-poppins font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Next Step</span>
+                    </div>
+                    <p class="text-text-secondary mb-6 max-w-md">
+                        Transforming career guidance with AI-powered insights and personalized roadmaps for the next generation of professionals.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="javascript:void(0)" class="w-10 h-10 bg-surface rounded-lg flex items-center justify-center hover:bg-secondary transition-smooth">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="javascript:void(0)" class="w-10 h-10 bg-surface rounded-lg flex items-center justify-center hover:bg-accent transition-smooth">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-poppins font-semibold mb-4">Platform</h4>
+                    <ul class="space-y-2">
+                        <li><a href="career_discovery_engine.html" class="text-text-secondary hover:text-secondary transition-micro">Career Discovery</a></li>
+                        <li><a href="roadmap_builder_career_timeline.html" class="text-text-secondary hover:text-secondary transition-micro">Roadmap Builder</a></li>
+                        <li><a href="resources_hub_learning_marketplace.html" class="text-text-secondary hover:text-secondary transition-micro">Resources Hub</a></li>
+                        <li><a href="ai_companion_chat_interface.html" class="text-text-secondary hover:text-secondary transition-micro">AI Companion</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support -->
+                <div>
+                    <h4 class="font-poppins font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="javascript:void(0)" class="text-text-secondary hover:text-secondary transition-micro">Help Center</a></li>
+                        <li><a href="javascript:void(0)" class="text-text-secondary hover:text-secondary transition-micro">Contact Us</a></li>
+                        <li><a href="javascript:void(0)" class="text-text-secondary hover:text-secondary transition-micro">Privacy Policy</a></li>
+                        <li><a href="javascript:void(0)" class="text-text-secondary hover:text-secondary transition-micro">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-surface pt-8 text-center text-text-secondary">
+                <p>&copy; 2025 Next Step. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>
